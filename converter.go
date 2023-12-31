@@ -383,17 +383,6 @@ func (c *converter) unit(unit *Unit) {
 	c.defineDecls(unit.Implementation)
 	c.decls(unit.Implementation, true)
 
-	initEmpty := true
-	for _, stmt := range unit.Init.Stmts {
-		if _, isEmpty := stmt.(*EmptyStmt); !isEmpty {
-			initEmpty = false
-		}
-	}
-	if !initEmpty {
-		c.print("func init() {\n")
-		c.stmts(unit.Init.Stmts)
-		c.print("}\n")
-	}
 }
 
 func (c *converter) decls(decls []DeclPart, isMain bool) {
@@ -501,6 +490,13 @@ func (c *converter) decl(decl DeclPart, isMain bool) {
 		c.stmts(decl.Stmt.Stmts)
 		c.popScope()
 
+		c.print("}\n\n")
+	case *InitDecl:
+		c.printf("func init(){\n")
+		c.stmts(decl.Inits)
+		c.print("}\n\n")
+		c.printf("func finalization(){\n")
+		c.stmts(decl.Finits)
 		c.print("}\n\n")
 	case *TypeDefs:
 		if len(decl.Defs) == 1 {

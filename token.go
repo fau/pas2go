@@ -36,6 +36,9 @@ const (
 	SEMICOLON
 	SLASH
 	STAR
+	SLASH_SLASH
+	LPAREN_STAR
+	RPAREN_STAR
 
 	// Keywords
 	AND
@@ -50,12 +53,14 @@ const (
 	END
 	FALSE
 	FILE
+	FINALIZATION
 	FOR
 	FUNCTION
 	GOTO
 	IF
 	IMPLEMENTATION
 	IN
+	INITIALIZATION
 	INLINE
 	INTERFACE
 	INTERRUPT
@@ -103,12 +108,14 @@ var keywordTokens = map[string]Token{
 	"END":            END,
 	"FALSE":          FALSE,
 	"FILE":           FILE,
+	"FINALIZATION":   FINALIZATION,
 	"FOR":            FOR,
 	"FUNCTION":       FUNCTION,
 	"GOTO":           GOTO,
 	"IF":             IF,
 	"IMPLEMENTATION": IMPLEMENTATION,
 	"IN":             IN,
+	"INITIALIZATION": INITIALIZATION,
 	"INLINE":         INLINE,
 	"INTERFACE":      INTERFACE,
 	"INTERRUPT":      INTERRUPT,
@@ -147,28 +154,31 @@ var tokenNames = map[Token]string{
 	ILLEGAL: "<illegal>",
 	EOF:     "EOF",
 
-	ASSIGN:     ":=",
-	AT:         "@",
-	COLON:      ":",
-	COMMA:      ",",
-	DOT:        ".",
-	DOT_DOT:    "..",
-	EQUALS:     "=",
-	GREATER:    ">",
-	GTE:        ">=",
-	LBRACKET:   "[",
-	LESS:       "<",
-	LPAREN:     "(",
-	LTE:        "<=",
-	MINUS:      "-",
-	NOT_EQUALS: "<>",
-	PLUS:       "+",
-	POINTER:    "^",
-	RBRACKET:   "]",
-	RPAREN:     ")",
-	SEMICOLON:  ";",
-	SLASH:      "/",
-	STAR:       "*",
+	ASSIGN:      ":=",
+	AT:          "@",
+	COLON:       ":",
+	COMMA:       ",",
+	DOT:         ".",
+	DOT_DOT:     "..",
+	EQUALS:      "=",
+	GREATER:     ">",
+	GTE:         ">=",
+	LBRACKET:    "[",
+	LESS:        "<",
+	LPAREN:      "(",
+	LTE:         "<=",
+	MINUS:       "-",
+	NOT_EQUALS:  "<>",
+	PLUS:        "+",
+	POINTER:     "^",
+	RBRACKET:    "]",
+	RPAREN:      ")",
+	SEMICOLON:   ";",
+	SLASH:       "/",
+	STAR:        "*",
+	SLASH_SLASH: "//",
+	LPAREN_STAR: "(*",
+	RPAREN_STAR: "*)",
 
 	AND:            "AND",
 	ARRAY:          "ARRAY",
@@ -182,12 +192,14 @@ var tokenNames = map[Token]string{
 	END:            "END",
 	FALSE:          "FALSE",
 	FILE:           "FILE",
+	FINALIZATION:   "FINALIZATION",
 	FOR:            "FOR",
 	FUNCTION:       "FUNCTION",
 	GOTO:           "GOTO",
 	IF:             "IF",
 	IMPLEMENTATION: "IMPLEMENTATION",
 	IN:             "IN",
+	INITIALIZATION: "INITIALIZATION",
 	INLINE:         "INLINE",
 	INTERFACE:      "INTERFACE",
 	INTERRUPT:      "INTERRUPT",

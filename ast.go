@@ -95,6 +95,7 @@ func (p *LabelDecls) declPart() {}
 func (p *ProcDecl) declPart()   {}
 func (p *TypeDefs) declPart()   {}
 func (p *VarDecls) declPart()   {}
+func (p *InitDecl) declPart()   {}
 
 type ConstDecls struct {
 	Decls []*ConstDecl
@@ -203,6 +204,23 @@ func (d *ProcDecl) String() string {
 	}
 	return fmt.Sprintf("procedure %s%s;%s%s",
 		d.Name, formatParams(d.Params), declsStr, stmtStr)
+}
+
+type InitDecl struct {
+	Inits  []Stmt
+	Finits []Stmt
+}
+
+func (d *InitDecl) String() string {
+	res := "initialization\n"
+	for _, v := range d.Inits {
+		res += fmt.Sprintf("\n%s", v)
+	}
+	res += "finalization\n"
+	for _, v := range d.Finits {
+		res += fmt.Sprintf("\n%s", v)
+	}
+	return res
 }
 
 type TypeDefs struct {

@@ -95,9 +95,8 @@ func (p *parser) unit() *Unit {
 
 	p.expect(IMPLEMENTATION)
 	unit.ImplementationUses = p.optionalUses()
-	unit.Implementation = p.declParts(true, CONST, FUNCTION, LABEL, PROCEDURE, TYPE, VAR)
+	unit.Implementation = p.declParts(true, CONST, FUNCTION, LABEL, PROCEDURE, TYPE, VAR, INITIALIZATION, FINALIZATION, END)
 
-	unit.Init = p.compoundStmt()
 	p.expect(DOT)
 	p.expect(EOF)
 
@@ -228,6 +227,17 @@ func (p *parser) declPart(allowBodies bool) DeclPart {
 		}
 
 		return &FuncDecl{name, params, result, decls, stmt}
+	case INITIALIZATION:
+		p.next()
+		//stmts := []Stmt{p.compoundStmt()}
+		inits := p.stmts()
+		p.expect(FINALIZATION) //todo make it optional
+		finits := p.stmts()
+		p.expect(END)
+		return &InitDecl{inits, finits}
+	case END:
+		p.next()
+		return &InitDecl{}
 	default:
 		panic(p.error("expected declaration instead of %s", p.tok))
 	}
