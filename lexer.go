@@ -8,9 +8,7 @@
 
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 // Lexer tokenizes a byte string of source code. Use NewLexer to
 // actually create a lexer, and Scan() to get tokens.
@@ -48,12 +46,32 @@ func NewLexer(src []byte) *Lexer {
 // For an ILLEGAL token, it's the error message.
 func (l *Lexer) Scan() (Position, Token, string) {
 	// Skip whitespace and comments
-	for l.ch == ' ' || l.ch == '\t' || l.ch == '\r' || l.ch == '\n' || l.ch == '{' {
-		if l.ch == '{' {
+	for l.ch == ' ' || l.ch == '\t' || l.ch == '\r' || l.ch == '\n' ||
+		l.ch == '{' ||
+		(l.ch == '/' && l.peekNext() == '/') ||
+		(l.ch == '(' && l.peekNext() == '*') {
+
+		switch {
+		case l.ch == '{':
 			l.next()
 			for l.ch != '}' && l.ch != 0 {
 				l.next()
 			}
+		case (l.ch == '/' && l.peekNext() == '/'):
+			l.next()
+			l.next()
+			//		for l.ch != '\n' && l.ch != 0 {
+			for l.peekNext() != '\n' && l.ch != 0 {
+				l.next()
+			}
+			l.next()
+		case (l.ch == '(' && l.peekNext() == '*'):
+			l.next()
+			l.next()
+			for l.ch != '*' && l.ch != 0 && l.peekNext() == ')' {
+				l.next()
+			}
+			l.next()
 		}
 		l.next()
 	}
