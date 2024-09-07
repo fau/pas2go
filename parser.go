@@ -547,7 +547,7 @@ func (p *parser) constDeclValue() Expr {
 			}
 			p.expect(COLON)
 			value := p.expr()
-			fields := []*ConstField{&ConstField{identExpr.Name, value}}
+			fields := []*ConstField{{identExpr.Name, value}}
 			for p.tok == SEMICOLON {
 				p.next()
 				name := p.val

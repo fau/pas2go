@@ -5,7 +5,7 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"strings"
 	"unicode/utf8"
@@ -23,14 +23,14 @@ func main() {
 	if len(os.Args) > 2 {
 		path := os.Args[2]
 		var err error
-		src, err = ioutil.ReadFile(path)
+		src, err = os.ReadFile(path)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error reading file: %v\n", err)
 			os.Exit(1)
 		}
 	} else {
 		var err error
-		src, err = ioutil.ReadAll(os.Stdin)
+		src, err = io.ReadAll(os.Stdin)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error reading stdin: %v", err)
 			os.Exit(1)
@@ -48,7 +48,7 @@ func main() {
 
 		units := []*Unit{}
 		for _, path := range os.Args[3:] {
-			unitSrc, err := ioutil.ReadFile(path)
+			unitSrc, err := os.ReadFile(path)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "error reading file: %v\n", err)
 				os.Exit(1)

@@ -794,7 +794,7 @@ func (c *converter) stmt(stmt Stmt) {
 		record := spec.(*RecordSpec)
 		var withName string
 		if identExpr, isIdent := stmt.Var.(*IdentExpr); isIdent &&
-			strings.ToLower(fieldName) == strings.ToLower(identExpr.Name) {
+			strings.EqualFold(fieldName, identExpr.Name) {
 			withName = identExpr.Name
 		} else {
 			withName = c.makeWithName(fieldName)
